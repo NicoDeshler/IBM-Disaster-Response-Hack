@@ -35,13 +35,18 @@
         width: 100%;
         box-sizing: border-box;
       }
+
+      #map {
+        box-shadow: 50px 50px 50xpx #FFFFFF inset ;
+      }
+
     </style>
 
     <script src="/_static/js/jquery-bundle.js"></script>
     <script
             src="https://maps.googleapis.com/maps/api/js?libraries=drawing,places"></script>
     <script>
-var apiKey = 'AIzaSyDIJ9XX2ZvRKCJcFRrl-lRanEtFUow4piM';
+var apiKey = 'AIzaSyBlPHAYsu_KjwqrZj3LK_3RdCw4aDLdSPI';
 
 var map;
 var drawingManager;
@@ -85,7 +90,7 @@ function initialize() {
       ]
     },
     polylineOptions: {
-      strokeColor: '#696969',
+      strokeColor: '#0066ff',
       strokeWeight: 2
     }
   });
