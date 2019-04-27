@@ -33,13 +33,22 @@ for i = 1:trainingSet_Size
         
 end
     
- %% Display Example:
+ %% Simulated Training Data Example:
+ 
+n = 98;
+sat_raw = Crop_Icon(readimage(satImgs, n));
+map_raw = Crop_Icon(readimage(mapImgs, n));
+
+nominal_sat_roads = Isolate_Roads(sat_raw, map_raw);
+disaster_sat_roads = Gaussian_Noise(nominal_sat_roads, 'high');
+disaster_impact = nominal_sat_roads - disaster_sat_roads; 
+
 subplot(2,2,1);
 title('Satellite Image');
-imshow(Crop_Icon(readimage(satImgs, 1)))
+imshow(sat_raw)
 
 subplot(2,2,2);
-imshow(Crop_Icon(readimage(mapImgs, 1)))
+imshow(map_raw)
 title('Road Map Image')
 
 subplot(2,2,3);
@@ -95,8 +104,8 @@ road_disaster = road_nominal.*noise;
 end
 
 function cImg = Crop_Icon(img)
-    n = 50;
-    cImg = img(1:end-n,:,:);
+    c = 50;
+    cImg = img(1:end-c,:,:);
 end
 
 
