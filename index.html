@@ -9,7 +9,8 @@
       html, body, #map {
         height: 100%;
         margin: 0px;
-        padding: 0px
+        padding: 0px;
+        overflow:scroll;
       }
 
       #panel {
@@ -38,6 +39,8 @@
 
       #map {
         box-shadow: 50px 50px 50xpx #FFFFFF inset ;
+        margin-left: 5vw; margin-right:5vw;
+        margin-right: 10vh; margin-right:10vh;
       }
 
     </style>
@@ -123,15 +126,19 @@ function runSnapToRoad(path) {
     pathValues.push(path.getAt(i).toUrlValue());
   }
 
-  $.get('https://roads.googleapis.com/v1/snapToRoads', {
-    interpolate: true,
-    key: apiKey,
-    path: pathValues.join('|')
-  }, function(data) {
-    processSnapToRoadResponse(data);
-    drawSnappedPolyline();
-    getAndDrawSpeedLimits();
-  });
+    const userAction = async () => {
+      const response = await fetch('https://roads.googleapis.com/v1/snapToRoads', {
+        interpolate: true,
+        key: apiKey,
+        path: pathValues.join('|')
+      });
+    const data = await response.json(); //extract JSON from the http response
+      // do something with myJson data
+      console.log("json processed", data);
+      processSnapToRoadResponse(data);
+        drawSnappedPolyline();
+        getAndDrawSpeedLimits();
+
 }
 
 // Store snapped polyline returned by the snap-to-road service.
@@ -179,6 +186,33 @@ function drawSpeedLimits(start, end) {
     for (var i = start; i < end; i++) {
       placeIdQuery += '&placeId=' + placeIdArray[i];
     }
+
+
+const userAction = async () => {
+      const response = await fetch('https://roads.googleapis.com/v1/snapToRoads', {
+        interpolate: true,
+        key: apiKey,
+        path: pathValues.join('|')
+      });
+    const data = await response.json(); //extract JSON from the http response
+      // do something with myJson data
+      console.log("json processed", data);
+      processSnapToRoadResponse(data);
+        drawSnappedPolyline();
+        getAndDrawSpeedLimits();
+
+
+    const userAction = async () => {
+  const responseSL = await fetch('https://roads.googleapis.com/v1/speedLimits',
+        'key=' + apiKey + placeIdQuery,
+        function(speedData);
+  const speedData = await responseSL.json(); //extract JSON from the http response
+  // do something with myJson data
+
+  console.log(speedData + "----speed data length" + speedData.length);
+  processSpeedLimitResponse(speedData, start);
+}
+
 
     $.get('https://roads.googleapis.com/v1/speedLimits',
         'key=' + apiKey + placeIdQuery,
