@@ -34,19 +34,46 @@
         width: 100%;
         box-sizing: border-box;
       }
+
+      #map {
+        margin-left: 5vw; margin-right:5vw;
+        padding-top:10vh; padding-bottom:10vh;
+      }
+      h1 {
+      text-align: center;
+      p {
+      left-margin: 15px;
+      }
     </style>
 
     <script src="/_static/js/jquery-bundle.js"></script>
     <script
             src="https://maps.googleapis.com/maps/api/js?libraries=drawing,places"></script>
     <script src="processImages.js"></script>
+
+
 </head>
 
 <body>
-<div id="map"></div>
-<div id="bar">
-    <p class="auto"><input type="text" id="autoc"/></p>
-    <p><a id="clear" href="#">Click here</a> to clear map.</p>
-</div>
+    <div>Made by Sam Wu, Nico Deshler, Billy Chau, Justin Wong</div>
+
+    <div>
+        <h1>EarthqWaze</h1>
+
+        <p>&nbsp&nbspThis map will find the fastest route under disastrous conditions by comparing good conditioned satellited images with disastrous real time images. <br /><br />
+        </p>
+        <br>
+        <p>&nbsp&nbsp&nbsp Double click to begin a new location. Double click again to choose destinatino. You can have multiple locations. <br /><br />
+        </p>
+    </div>
+
+    <div id="map"></div>
+
+    <br></br><br></br>
+
+    <div id="bar">
+        <p class="auto"><input type="text" id="autoc"/></p>
+        <p><a id="clear" href="#">Click here</a> to clear map.</p>
+    </div>
 </body>
 </html>

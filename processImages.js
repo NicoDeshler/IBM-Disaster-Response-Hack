@@ -76,14 +76,18 @@ function runSnapToRoad(path) {
     pathValues.push(path.getAt(i).toUrlValue());
   }
   console.log("path here: ", path);
+  console.log("path at 0: ", path[0]);
 
 
 
+    // DATA HERE NEEDS TO SNAP FROM PYTHON BACKEND
   $.get('https://roads.googleapis.com/v1/snapToRoads', {
     interpolate: true,
     key: apiKey,
     path: pathValues.join('|')
   }, function(data) {
+  // drawSnappedPolyline colors coordinates in "snappedCoordinates" yellow
+  // snappedCoordinates are processed in processSnapToRoadResponse
     processSnapToRoadResponse(data);
     drawSnappedPolyline();
     getAndDrawSpeedLimits();
@@ -111,7 +115,7 @@ function processSnapToRoadResponse(data) {
 function drawSnappedPolyline() {
   var snappedPolyline = new google.maps.Polyline({
     path: snappedCoordinates,
-    strokeColor: 'black',
+    strokeColor: 'yellow',
     strokeWeight: 3
   });
 
