@@ -21,6 +21,7 @@ To run GMaps_DSet_Gen.py you will to pip install the following packages:
 * webbrowser
 * Pillow
 * urllib
+
 Additionally, you will need to provide an google cloud api key that enables Google Maps and Roads APIs
 
 ## Contributors
