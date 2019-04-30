@@ -1,10 +1,12 @@
 
 % Google Maps image data directories.
-satImgDir = fullfile('LosAngeles\satellite');
-mapImgDir = fullfile('LosAngeles\regular');
+satImgDir = fullfile('Test\satellite\');
+mapImgDir = fullfile('Test\map');
+
 
 % Instantiate image data store.
 satImgs = imageDatastore(satImgDir);
+satImgs.ReadFcn = @rgbImgReader;
 mapImgs = imageDatastore(mapImgDir);
 
 trainingSet_Size = numel(satImgs.Files);
@@ -14,27 +16,17 @@ for i = 1:trainingSet_Size
     sat_raw = Crop_Icon(readimage(satImgs, i));
     map_raw = Crop_Icon(readimage(mapImgs, i));
     
+    disaster_level =  mod(i,3) + 1;
     nominal_sat_roads = Isolate_Roads(sat_raw, map_raw);
     
-    set = mod(i,3) + 1;
-    switch(set)
-        case 1
-        disaster_sat_roads = Gaussian_Noise(nominal_sat_roads, 'low');
-        
-        case 2
-        disaster_sat_roads = Gaussian_Noise(nominal_sat_roads, 'med');
-        
-        case 3
-        disaster_sat_roads = Gaussian_Noise(nominal_sat_roads, 'high');
-    end
+    disaster_sat_roads = Gaussian_Noise(nominal_sat_roads, disaster_level);
     disaster_impact = nominal_sat_roads - disaster_sat_roads; 
-    imwrite(disaster_impact, ['Level', int2str(set), '\', 'data', int2str(i), '.png'])
-    
+    imwrite(disaster_impact, [int2str(disaster_level),'_Level', '\', 'data', int2str(i), '.png'])
         
 end
     
  %% Simulated Training Data Example:
- 
+%{ 
 n = 98;
 sat_raw = Crop_Icon(readimage(satImgs, n));
 map_raw = Crop_Icon(readimage(mapImgs, n));
@@ -48,7 +40,7 @@ title('Satellite Image');
 imshow(sat_raw)
 
 subplot(2,2,2);
-imshow(map_raw)
+imshow(map_raw==max(map_raw(:)))
 title('Road Map Image')
 
 subplot(2,2,3);
@@ -58,14 +50,15 @@ title('Satellite Image Road Isolation')
 subplot(2,2,4);
 imshow(disaster_impact)
 title('Simulated Disaster Effects')
-
+%}
 
 
 function roads = Isolate_Roads(sat_raw, map_raw)
 % Isolates Roads by applying a thresholded map view image mask on the
 % satellite view image. 
-road_binary = Road_Mask(map_raw);
-roads = bsxfun(@times, sat_raw, cast(road_binary, 'like', sat_raw));
+road_binary = double(repmat(Road_Mask(map_raw),1,1,3));
+roads = sat_raw.*road_binary;
+
 end
 
 function mask = Road_Mask(map_raw)
@@ -85,27 +78,32 @@ end
 
 % Add gaussian noise to the roads based on the disaster intensity
 % classification.
-function road_disaster = Gaussian_Noise(road_nominal, disaster_rating)
+function noisy_road = Gaussian_Noise(road_nominal, disaster_rating)
 m = mean(road_nominal(:));
 
 % Blur variance determined based on disaster level
 switch (disaster_rating)
-    case 'low'
-        gauss_var = m/100;
-    case 'med'
-        gauss_var = m/10;
-    case 'high'
+    case 1
         gauss_var = m;
+    case 2
+        gauss_var = m*10;
+    case 3
+        gauss_var = m*100;
 end
 
 % Apply gaussian noise to image
-noise = uint8(imnoise(zeros(size(road_nominal)), 'gaussian', 1, gauss_var));
-road_disaster = road_nominal.*noise;
+noise = double(imnoise(zeros(size(road_nominal)), 'gaussian', 1, gauss_var));
+noisy_road = road_nominal.*noise;
 end
 
 function cImg = Crop_Icon(img)
     c = 50;
     cImg = img(1:end-c,:,:);
+end
+
+function data = rgbImgReader(filename)
+    [im,cmap] = imread(filename);
+    data = ind2rgb(im,cmap);
 end
 
 
