@@ -24,6 +24,10 @@ To run GMaps_DSet_Gen.py you will to pip install the following packages:
 
 #Additionally, you will need to provide an google cloud api key that enables Google Maps and Roads APIs
 
+## After installing all your dependencies, simply open up index.html for a quick demo. Here is an example of what mapping from Cory Hall to the Pacific School of Religion.
+![Image of User Interface]
+(UIDemo.png)
+
 ## Contributors
 Current: Nico Deshler, Billy Chau, Sam Wu, Justin Wong.
 
