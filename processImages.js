@@ -1,5 +1,5 @@
 
-var apiKey = 'AIzaSyBlPHAYsu_KjwqrZj3LK_3RdCw4aDLdSPI';
+var apiKey = "AIzaSyBFc4JbwRiSga0ELL0mI3k9yNVIlYpACQc";
 
 var map;
 var drawingManager;
@@ -30,6 +30,10 @@ function initialize() {
       map.setZoom(17);
     }
   });
+
+
+
+
 
   // Enables the polyline drawing control. Click on the map to start drawing a
   // polyline. Each click will add a new vertice. Double-click to stop drawing.
@@ -79,23 +83,32 @@ function runSnapToRoad(path) {
 
 
 
-    // DATA HERE NEEDS TO SNAP FROM PYTHON BACKEND
-  try {$.get('https://roads.googleapis.com/v1/snapToRoads', {
+    // DATA HERE NEEDS TO SNAP FROM PYTHON BACKEND isntead of google roads api
+  $.get('https://roads.googleapis.com/v1/snapToRoads', {
     interpolate: true,
     key: apiKey,
     path: pathValues.join('|')
   }, function(data) {
   // drawSnappedPolyline colors coordinates in "snappedCoordinates" yellow
   // snappedCoordinates are processed in processSnapToRoadResponse
-  console.log("Processing!")
-  console.log(data);
+  console.log("inside runSnapToRoad:", data);
     processSnapToRoadResponse(data);
     drawSnappedPolyline();
     getAndDrawSpeedLimits();
   });
-  } catch(e) {
-    console.log(e);
-  }
+
+//  $.ajax({
+//      url: 'https://roads.googleapis.com/v1/snapToRoads?path=' + pathValues.join('|') + '&key=AIzaSyA1JWR3ohBFQ_P7F5eSMSJb0dwV9PbB3pA&interpolate=true', //true',
+//      crossDomain: true,
+//      dataType: 'jsonp'
+//    }).done(function(data) {
+//              // drawSnappedPolyline colors coordinates in "snappedCoordinates" yellow
+//              // snappedCoordinates are processed in processSnapToRoadResponse
+//              console.log("Inside ajax call:" , data);
+//                processSnapToRoadResponse(data);
+//                drawSnappedPolyline();
+//                getAndDrawSpeedLimits();
+//              });
 
 
 
@@ -106,6 +119,7 @@ function runSnapToRoad(path) {
 function processSnapToRoadResponse(data) {
   snappedCoordinates = [];
   placeIdArray = [];
+  console.log(data);
   for (var i = 0; i < data.snappedPoints.length; i++) {
     var latlng = new google.maps.LatLng(
         data.snappedPoints[i].location.latitude,
@@ -119,7 +133,7 @@ function processSnapToRoadResponse(data) {
 function drawSnappedPolyline() {
   var snappedPolyline = new google.maps.Polyline({
     path: snappedCoordinates,
-    strokeColor: 'yellow',
+    strokeColor: 'white',
     strokeWeight: 3
   });
 
@@ -148,7 +162,7 @@ function drawSpeedLimits(start, end) {
       placeIdQuery += '&placeId=' + placeIdArray[i];
     }
 
-    processSpeedLimitResponse(path)
+//    processSpeedLimitResponse(path)
     $.get('https://roads.googleapis.com/v1/speedLimits',
         'key=' + apiKey + placeIdQuery,
         function(speedData) {
@@ -178,23 +192,24 @@ function processSpeedLimitResponse(speedData, start) {
 }
 
 function getColorForSpeed(speed_kph) {
-    return 'red';
-//  if (speed_kph <= 40) {
-//    return 'purple';
-//  }
-//  if (speed_kph <= 50) {
-//    return 'blue';
-//  }
-//  if (speed_kph <= 60) {
-//    return 'green';
-//  }
-//  if (speed_kph <= 80) {
-//    return 'yellow';
-//  }
-//  if (speed_kph <= 100) {
-//    return 'orange';
-//  }
-//  return 'red';
+//    return 'red';
+  if (speed_kph <= 40) {
+    return 'purple';
+  }
+  if (speed_kph <= 50) {
+    return 'blue';
+  }
+  if (speed_kph <= 60) {
+    return 'green';
+  }
+  if (speed_kph <= 80) {
+    return 'yellow';
+  }
+  if (speed_kph <= 100) {
+    return 'orange';
+  }
+  return 'red';
 }
+
 
 document.addEventListener('DOMContentLoaded', initialize, false);
