@@ -11,6 +11,22 @@ There are four stages in the pipeline of this project:
 ## Parameter Information
 The pipeline accepts two pairs of latitude and longitude coordinates (the starting location and the destination of the user) as input and returns two visual aids for outputs. The first is a roadmap highlighting the least-time optimal route from the starting location to the destination displayed in the format of Google Maps. The second is a stylized graph that represents which road networks in the search space have been most affected. This macroscopic information of the broader region could help teams identify areas that are most urgently in need of aid.
 
+## Dependencies
+To run GMaps_DSet_Gen.py you will to pip install the following packages:
+* matplotlib
+* requests
+* polyline
+* numpy
+* networkx
+* webbrowser
+* Pillow
+* urllib
+
+#Additionally, you will need to provide an google cloud api key that enables Google Maps and Roads APIs
+
+## After installing all your dependencies, simply open up index.html for a quick demo. Here is an example of what mapping from Cory Hall to the Pacific School of Religion.
+![Image of User Interface](/UIDemo.png)
+
 ## Contributors
 Current: Nico Deshler, Billy Chau, Sam Wu, Justin Wong.
 
