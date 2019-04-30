@@ -1,82 +1,77 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
-    <meta charset="utf-8">
-    <title>Roads API Demo</title>
-    <style>
-      html, body, #map {
-        height: 100%;
-        margin: 0px;
-        padding: 0px
-      }
+    <head>
+        <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+        <meta charset="utf-8">
+        <title>Roads API Demo</title>
+        <style>
+          html, body, #map {
+            height: 100%;
+            margin: 0px;
+            padding: 0px
+          }
+          #panel {
+            position: absolute;
+            top: 5px;
+            left: 50%;
+            margin-left: -180px;
+            z-index: 5;
+            background-color: #fff;
+            padding: 5px;
+            border: 1px solid #999;
+          }
+          #bar {
+            width: 240px;
+            background-color: rgba(255, 255, 255, 0.75);
+            margin: 8px;
+            padding: 4px;
+            border-radius: 4px;
+          }
+          #autoc {
+            width: 100%;
+            box-sizing: border-box;
+          }
+          #map {
+            margin-left: 5vw; margin-right:5vw;
+            padding-top:10vh; padding-bottom:10vh;
+          }
+          h1 {
+          text-align: center;
+          p {
+          left-margin: 15px;
+          }
+        </style>
 
-      #panel {
-        position: absolute;
-        top: 5px;
-        left: 50%;
-        margin-left: -180px;
-        z-index: 5;
-        background-color: #fff;
-        padding: 5px;
-        border: 1px solid #999;
-      }
+        <script src="/_static/js/jquery-bundle.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+        <script src="https://maps.googleapis.com/maps/api/js"></script>
 
-      #bar {
-        width: 240px;
-        background-color: rgba(255, 255, 255, 0.75);
-        margin: 8px;
-        padding: 4px;
-        border-radius: 4px;
-      }
-
-      #autoc {
-        width: 100%;
-        box-sizing: border-box;
-      }
-
-      #map {
-        margin-left: 5vw; margin-right:5vw;
-        padding-top:10vh; padding-bottom:10vh;
-      }
-      h1 {
-      text-align: center;
-      p {
-      left-margin: 15px;
-      }
-    </style>
-
-    <script src="/_static/js/jquery-bundle.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-    <script src="https://maps.googleapis.com/maps/api/js"></script>
-
-    <script
-            src="https://maps.googleapis.com/maps/api/js?libraries=drawing,places"></script>
-    <script src="processImages.js"></script>
+        <script src="processImages.js"></script>
 
 
-</head>
+    </head>
 
-<body>
-    <div>Made by Sam Wu, Nico Deshler, Billy Chau, Justin Wong</div>
+    <body>
+        <div>Made by Sam Wu, Nico Deshler, Billy Chau, Justin Wong</div>
 
-    <div>
-        <h1>EarthqWaze</h1>
+        <div>
+            <h1>EarthqWaze</h1>
 
-        <p>&nbsp&nbspThis map will find the fastest route under disastrous conditions by comparing good conditioned satellited images with disastrous real time images. <br /><br />
-        </p>
-        <br>
-        <p>&nbsp&nbsp&nbsp Double click to begin a new location. Double click again to choose destinatino. You can have multiple locations. <br /><br />
-        </p>
-    </div>
+            <p>&nbsp&nbspThis map will find the fastest route under disastrous conditions by comparing good conditioned satellited images with disastrous real time images. <br /><br />
+            </p>
+            <br>
+            <p>&nbsp&nbsp&nbsp Double click to begin a new location. Double click again to choose destinatino. You can have multiple locations. <br /><br />
+            </p>
+        </div>
 
-    <div id="map"></div>
+        <div id="map"></div>
 
-    <br></br><br></br>
+        <br></br><br></br>
 
-    <div id="bar">
-        <p class="auto"><input type="text" id="autoc"/></p>
-        <p><a id="clear" href="#">Click here</a> to clear map.</p>
-    </div>
-</body>
+        <div id="bar">
+            <p class="auto"><input type="text" id="autoc"/></p>
+            <p><a id="clear" href="#">Click here</a> to clear map.</p>
+        </div>
+    </body>
+
 </html>

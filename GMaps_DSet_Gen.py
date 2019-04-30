@@ -10,10 +10,10 @@ import urllib.request
 from PIL import Image
 
 # Google Maps Account Key
-API_KEY = "AIzaSyBlPHAYsu_KjwqrZj3LK_3RdCw4aDLdSPI"
+API_KEY = "put_key_here"
 
 # this is just for testing my implementation (ML_output here is dummy test input)
-ML_output = [[(37.874824, -122.262206),(37.874383, -122.268643), 3],[(37.874383, -122.268643),(37.874214, -122.268643), 1],[(37.874214, -122.268643),(37.872181, -122.268429), 2],[(37.874214, -122.268643),(37.878380, -122.269159), 1]]
+ML_output = [[(37.874824, -122.262206),(37.874383, -122.268643), 3],[(37.874383, -122.268643),(37.874214, -122.268643), 1],[(37.874214, -122.268643),(37.876551, -122.268890), 1],[(37.876551, -122.268890),(37.872181, -122.268429), 2],[(37.876551, -122.268890),(37.878380, -122.269159), 1]]
 
 def create_map_and_graph(ML_output):
     G = nx.Graph()

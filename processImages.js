@@ -79,9 +79,8 @@ function runSnapToRoad(path) {
   }
   console.log("path here: ", path);
 
-
-
     // DATA HERE NEEDS TO SNAP FROM PYTHON BACKEND isntead of google roads api
+
   $.get('https://roads.googleapis.com/v1/snapToRoads', {
     interpolate: true,
     key: apiKey,
@@ -93,7 +92,6 @@ function runSnapToRoad(path) {
     processSnapToRoadResponse(data);
     drawSnappedPolyline();
   });
-
 
 }
 
@@ -122,6 +120,5 @@ function drawSnappedPolyline() {
   snappedPolyline.setMap(map);
   polylines.push(snappedPolyline);
 }
-
 
 document.addEventListener('DOMContentLoaded', initialize, false);
