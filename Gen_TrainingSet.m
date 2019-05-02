@@ -1,7 +1,7 @@
 
 % Google Maps image data directories.
-satImgDir = fullfile('Test\satellite\');
-mapImgDir = fullfile('Test\map');
+satImgDir = fullfile('Test_GMapsImgs\satellite\');
+mapImgDir = fullfile('Test_GMapsImgs\map');
 
 
 % Instantiate image data store.
@@ -26,31 +26,32 @@ for i = 1:trainingSet_Size
 end
     
  %% Simulated Training Data Example:
-%{ 
-n = 98;
+
+n = 5;
 sat_raw = Crop_Icon(readimage(satImgs, n));
 map_raw = Crop_Icon(readimage(mapImgs, n));
 
 nominal_sat_roads = Isolate_Roads(sat_raw, map_raw);
-disaster_sat_roads = Gaussian_Noise(nominal_sat_roads, 'high');
+disaster_sat_roads = Gaussian_Noise(nominal_sat_roads, 3);
 disaster_impact = nominal_sat_roads - disaster_sat_roads; 
 
-subplot(2,2,1);
-title('Satellite Image');
+fig = figure;
 imshow(sat_raw)
+title('Satellite Image')
+
 
 subplot(2,2,2);
-imshow(map_raw==max(map_raw(:)))
-title('Road Map Image')
+imshow(map_raw > min(map_raw(:)))
+title('Road Map Mask')
 
 subplot(2,2,3);
-imshow(disaster_sat_roads)
-title('Satellite Image Road Isolation')
+imshow(nominal_sat_roads)
+title('Satellite Road Isolation')
 
 subplot(2,2,4);
-imshow(disaster_impact)
-title('Simulated Disaster Effects')
-%}
+imshow(disaster_sat_roads)
+title('Simulated Disaster Effects - Gaussian Noise')
+
 
 
 function roads = Isolate_Roads(sat_raw, map_raw)
@@ -58,7 +59,6 @@ function roads = Isolate_Roads(sat_raw, map_raw)
 % satellite view image. 
 road_binary = double(repmat(Road_Mask(map_raw),1,1,3));
 roads = sat_raw.*road_binary;
-
 end
 
 function mask = Road_Mask(map_raw)
@@ -70,8 +70,8 @@ redChannel = map_raw(:, :, 1);
 %blueChannel = map_raw(:, :, 3);
 
 % Find white, where each color channel is more than 250
-thresholdValue = max(map_raw(:));
-mask = redChannel >= thresholdValue-1;
+thresholdValue = min(map_raw(:));
+mask = redChannel > thresholdValue;
 %mask = redChannel > thresholdValue & greenChannel > thresholdValue & blueChannel > thresholdValue;
 
 end
