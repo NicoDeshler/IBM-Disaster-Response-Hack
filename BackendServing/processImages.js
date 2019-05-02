@@ -6,6 +6,38 @@ var drawingManager;
 var placeIdArray = [];
 var polylines = [];
 var snappedCoordinates = [];
+var selected = [];
+var stringedCoordinates ='';
+
+window.onload = function() {
+	// setup the button click for additional
+	document.getElementById("mapRoute").onclick = function() {
+	    console.log("clicking work");
+		doWork()
+	};
+}
+
+function doWork() {
+	// ajax the JSON to the server
+
+	try {
+        console.log("doing work stringedCoordinates",stringedCoordinates);
+
+        $.post('http://127.0.0.1:5000/receiver', stringedCoordinates, function(data){
+            console.log("post called on data", data);
+            console.log("post called on following json", stringedCoordinates);
+            console.log('${data} returned');
+            });
+
+        console.log("past dowrok ");
+        // stop link reloading the page
+        event.preventDefault();
+    } catch (err) {
+        console.log("Error found:", err);
+        }
+    }
+
+
 
 function initialize() {
     var mapOptions = {
@@ -52,9 +84,29 @@ function initialize() {
 
     // Snap-to-road when the polyline is completed.
     drawingManager.addListener('polylinecomplete', function(poly) {
+        // path is an MVCArray that contains information about selected points returned from google maps api call
+        // coords contains the important array of coordinates((lat, long) pairs) that the user wants to go to
+        // stringedCoords converts the coordinates into a JSON string to pass to python backend
         var path = poly.getPath();
+        var coords = path.getArray();
+        var stringedCoords = JSON.stringify(coords);
         polylines.push(poly);
         placeIdArray = [];
+
+        //Assigning global variables to maintain state to avoid mayn api calls for easier testing
+
+        selected = poly;
+        stringedCoordinates = stringedCoords
+
+        //NEED TO PASS PATH TO PYTHON TO PROCESSS!!!!
+        // Here, "path" contains the selected points
+        console.log("User wants to go to the follow coordiantes:", stringedCoords);
+        $.post('http://127.0.0.1:5000/receiver', stringedCoords, function(data){
+        	    console.log("post called on", stringedCoords);
+        	    console.log('{data} returned');
+        	    });
+
+        console.log("passed post call");
         runSnapToRoad(path);
       });
 
@@ -122,115 +174,3 @@ function drawSnappedPolyline() {
 }
 
 document.addEventListener('DOMContentLoaded', initialize, false);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<!DOCTYPE html>
-<html>
-<head>
-    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
-    <meta charset="utf-8">
-    <title>Roads API Demo</title>
-
-    <!-- CSS Styline -->
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
-    <link rel="stylesheet" href='https://fonts.googleapis.com/css?family=Aladin' >
-    <link rel="stylesheet" href="main.css">
-
-    <script src="/_static/js/jquery-bundle.js"></script>
-    <script src="https://maps.googleapis.com/maps/api/js?libraries=drawing,places"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-    <script src="processImages.js"></script>
-
-
-
-</head>
-
-<body>
-
-    <div class="container">
-
-        <h1>EarthqWaze</h1>
-
-        <div class="row border" id="intro">
-            <p>This map will find the fastest route under disastrous conditions by comparing good conditioned satellited images with disastrous real time images. <br>
-                You will see highlighted in white the quickest route that will take you to your destination now. <br />
-            </p>
-        </div>
-        <br>
-        <div class="row border" id="instructions">
-            <p><strong>Double click</strong> to begin a new location. <strong>Double click</strong> again to choose destination. You can also have multiple locations. <br /><br />
-            </p>
-        </div>
-    </div>
-    <br><br>
-
-    <div class="border" id="map"></div>
-
-    <br></br><br></br>
-
-    <div id="bar">
-        <p class="auto"><input type="text" id="autoc"/></p>
-        <p><a id="clear" href="#">Click here</a> to clear map.</p>
-    </div>
-
-    <div id="authors"><strong>Made by Sam Wu, Nico Deshler, Billy Chau, Justin Wong</strong></div>
-</body>
-
-
-
-
-
-
-export JAVA_HOME=$(/usr/libexec/java_home)
-PATH=$PATH:$JAVA_HOME
-
-M2_HOME=/Users/JustinRWong/Desktop/PersonalWebsite-2/BuildingWithMaven/apache-maven-3.6.0
-PATH=$PATH:$M2_HOME/bin
-
-# Setting PATH for Python 3.6
-# The original version is saved in .bash_profile.pysave
-PATH="/Library/Frameworks/Python.framework/Versions/3.6/bin:${PATH}"
-export PATH
-
-# added by Anaconda3 5.0.1 installer
-export PATH="/Users/JustinRWong/anaconda3/bin:$PATH"
-
-# added by Anaconda3 5.0.1 installer
-export PATH="/Volumes/JustinWong/anaconda3/bin:$PATH"
-
-#add npm bin PATH
-export PATH="/home/your-username/npm-global/bin:$PATH"
-
-# Setting PATH for Python 3.7
-# The original version is saved in .bash_profile.pysave
-PATH="/Library/Frameworks/Python.framework/Versions/3.7/bin:${PATH}"
-export PATH
-# added by Anaconda3 2019.03 installer
-# >>> conda init >>>
-# !! Contents within this block are managed by 'conda init' !!
-__conda_setup="$(CONDA_REPORT_ERRORS=false '/Library/Python/anaconda3/bin/conda' shell.bash hook 2> /dev/null)"
-if [ $? -eq 0 ]; then
-    \eval "$__conda_setup"
-else
-    if [ -f "/Library/Python/anaconda3/etc/profile.d/conda.sh" ]; then
-        . "/Library/Python/anaconda3/etc/profile.d/conda.sh"
-        CONDA_CHANGEPS1=false conda activate base
-    else
-        \export PATH="/Library/Python/anaconda3/bin:$PATH"
-    fi
-fi
-unset __conda_setup
-# <<< conda init <<<

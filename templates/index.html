@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+        <meta charset="utf-8">
+        <title>Roads API Demo</title>
+
+        <!-- CSS Styline -->
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+        <link rel="stylesheet" href='https://fonts.googleapis.com/css?family=Aladin' >
+        <link rel="stylesheet" href="../assets/css/main.css">
+
+        <script src="/_static/js/jquery-bundle.js"></script>
+        <script src="https://maps.googleapis.com/maps/api/js?libraries=drawing,places"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+        <script src="../BackendServing/processImages.js"></script>
+
+
+    </head>
+
+
+
+    <body class="container col-auto">
+        <!--Earthquake Banner on top-->
+        <div class="row">
+            <h1>EarthqWaze</h1>
+        </div>
+
+        <div class="container">
+            <div class="row border text-center" id="intro">
+                <div class="col-auto">
+                    <p>This map will find the fastest route under disastrous conditions by comparing good conditioned satellited images with disastrous real time images. <br>
+                        You will see highlighted in white the quickest route that will take you to your destination now. <br />
+                    </p>
+                </div>
+            </div>
+
+            <br>
+
+            <div class="row border" id="instructions">
+                <div class="col-auto">
+                    <p><strong>Double click</strong> to begin a new location. <strong>Double click</strong> again to choose destination. You can also have multiple locations by single click once you've begun mapping multiple destinations. <br /><br />
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <br><br>
+
+        <!--Rastering for map to display -->
+        <div class="border mapContent" id="map"></div>
+
+        <br>
+
+        <!--Clears page by resetting it. This means cannot save mapped data unless we store in separate database and serve to particular user-->
+        <!--Backend watches this map and collects the user's endpoints chosen to map destination-->
+        <div id="bar">
+            <p class="auto"><input type="text" id="autoc"/></p>
+            <p><a id="clear" href="#">Click here</a> to clear map.</p>
+        </div>
+
+        <!--Optimize Route! Sends endpoitns collected from user to run python script and backend to find optimal route in real time-->
+        <button id="mapRoute" type="button" class="finder mapContent">{{map}} </button>
+
+        <br><br><br>
+
+        <!--Credits to the BOIIS-->
+        <footer>
+            <div id="authors"><strong>Made by Justin Wong, Sam Wu, Billy Chau, Nico Deshler</strong></div>
+        </footer>
+
+    </body>
+
+
+</html>
