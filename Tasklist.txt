@@ -31,3 +31,9 @@ EARTHQWAZE TASKLIST:
 - Retrain/Refine IBM Visual Recognition Model 
 	>> Train model over larger datasets (e.g. 1000+ images per level) now that color-data is enabled
 	>> Generate more levels for damage classification (finer binnings)
+
+- Fix some images to "declutter" main folder
+	>> put images in Images folder
+		>> I would mess with the map and graph but I haven't had a chance to look at the notebooks to see if they were hardcoded titles so I won't touch it yet so we don't have multiple copies
+	>> consolidate all jupyter notebooks together
+	>> refactor jupyter notebooks into one big python serving BEAST to finish off the project
