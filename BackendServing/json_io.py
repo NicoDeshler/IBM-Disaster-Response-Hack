@@ -19,7 +19,8 @@ res = " "
 @app.route('/main')
 def output():
 	# serve index template
-	return render_template('index.html',buttonDisplay="Calling from json_io")
+	return render_template('./index.html',map="Get Directions!",
+						                  authors="Justin Wong, Sam Wu, Billy Chau, Nico Deshler")
 
 @app.route('/receiver', methods = ['GET','POST'])
 def worker():
@@ -72,7 +73,7 @@ def worker():
 			result += str(item['make']) + '\n'
 		print("post calleed")
 		res = result
-		return result
+		return "returned from json_io post"
 
 
 

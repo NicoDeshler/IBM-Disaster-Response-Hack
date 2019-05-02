@@ -1,0 +1,162 @@
+
+/* -----------     Styling for page classes---------- */
+html, body, #map {
+    height: 100%;
+    margin: 0px;
+    padding: 0px
+    }
+
+body {
+    background-color: #074b8b;
+    }
+
+h1,h2 {
+    text-align: center;
+    font-family: "Aladin";
+    color: #FFFFFF;
+    width:100%;
+    background-color:#8b4707;
+    }
+
+p {
+    left-margin: 15px;
+    }
+
+.finder {
+    border-radius: 18px;
+    border-color: white;
+    font-size: 3vh;
+    background: #0088cd;
+    }
+
+.mapContent {
+    margin-left: 5vw; margin-right:5vw;
+    }
+
+.written {
+    text-align: center;
+    border-radius: 15px;
+    border: 30px;
+    border-color: coral;
+    background: #0b72d4;
+    color: #FFFFFF;
+}
+
+.directions {
+    text-align: center;
+    border-radius: 15px;
+    border: 30px;
+    border-color: coral;
+    background: #fdfaee;
+    color: #000000;
+}
+
+footer {
+    text-align: center;
+    color: #000000;
+    width: 100%;
+    background-color:white;
+    position:fixed;
+    bottom:0px;left:0;
+}
+
+
+/* -----------     Styling for page by id---------- */
+#panel {
+    position: absolute;
+    top: 5px;
+    left: 50%;
+    margin-left: -180px;
+    z-index: 5;
+    background-color: #fff;
+    padding: 5px;
+    border: 1px solid #999;
+    }
+
+#bar {
+    width: 240px;
+    background-color: rgba(255, 255, 255, 0.75);
+    margin: 8px;
+    padding: 4px;
+    border-radius: 4px;
+    }
+
+#autoc {
+    width: 100%;
+    box-sizing: border-box;
+    }
+
+#map {
+    margin-left: 5vw; margin-right:5vw;
+    height:60vh;
+    border-radius: 15px;
+    }
+
+#intro, #instructions {
+    text-align: center;
+    border-radius: 15px;
+    border: 30px;
+    border-color: coral;
+    background: #005580;
+    color: #FFFFFF;
+    }
+
+#userInfo {
+    color: #000000;
+    }
+
+.instructionsDiv {
+    text-align: right;
+    position: relative;
+    margin-bottom: 10px;
+}
+
+#showOptions {
+    color:#888888;
+    text-shadow: 2px 0 #888888;
+    letter-spacing:2px;
+    font-weight:bold;
+}
+/* ------ Dialog styling ------*/
+dialog {
+    border: 10px solid rgba(255, 255, 255, 1.0);
+    border-radius: 6px;
+    box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
+    width: 75vw;
+    height: auto;
+    font-size: 3vh;
+    overflow-y: auto;
+    position:fixed;
+    background-color:#0b72d4;
+  }
+
+dialog::backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.8);
+}
+
+.endDOuter {
+    position: relative;
+    top:-4vh;
+}
+.endDialog {
+    right:13vw;
+    width: 80%;
+    position:fixed;
+    background-color:white;
+}
+.endDialogBtn {
+    bottom:20%;
+    height:90%;
+    width: 6vw;
+    font-size:1.5vw;
+}
+.userForm {
+    border-radius: 18px;
+    border-color: white;
+    font-size: 3vh;
+}
