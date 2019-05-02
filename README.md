@@ -28,10 +28,11 @@ To run GMaps_DSet_Gen.py you will to pip install the following packages:
 	1. Make sure you are in "ibm-disaster-response-hack" directory with 'pwd'
 	2. Run 'python backendserving/json_io.py SimpleHTTPServer'
 	3. Go to your favorite browser and follow where yourr computer is hosting the python server'http://127.0.0.1:5000/main'
-	![How to run on your computer](/Images/terminalRunThrough.png)
+![How to run on your computer](/Images/terminalRunThrough.png)
 
 Here is an example of what mapping from Cory Hall to the Pacific School of Religion.
 ![Image of User Interface1](/Images/UIDemo.png)
+
 ![Image of User Interface2](/Images/instructionsUI.png)
 
 ## Contributors
