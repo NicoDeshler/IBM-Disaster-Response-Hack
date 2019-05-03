@@ -8,13 +8,14 @@ import random, json
 
 app = Flask(__name__)
 cors = CORS(app)
-received = " "
-ty = " "
-jsoniee = " "
-boo = " "
-stringedCoordinates = " "
-daaattypee = " "
-res = " "
+## Because of the use of global variables to pass data between retrieve and main, this solution is not scaleable. If there were multiple  instances of retriever open, there would potentially be data races which are no good.
+latestRequest = " "    	 	## The latest GET/POST request called from any route
+ty = " "					## The corresponding type of the latest Request
+stringedCoordinates = " "	## User's desired destination(s) put into a string format. This is not json formated, only a string
+res = " "					## result to pass around through pipeline
+loaded_json = []			## User;s desired destinations put into json array format
+pairsFound = 0;				## number of pairs of coordinates, denoting the location(s) the user wants to to. Also the length of the loaded_json array
+
 
 @app.route('/main')
 def output():
@@ -24,55 +25,60 @@ def output():
 
 @app.route('/receiver', methods = ['GET','POST'])
 def worker():
-	##print("I received the following:", request.get_json())
 	# read json + reply
-	received = request
+	## Gets access to global variables to switch between get and post calls
+	glob = globals()
+	previousReq = glob.get("latestRequest")
+	glob["latestRequest"] = request
 	ty = type(request)
-	jsoniee = request.get_json()
-	stringedCoordinates = request.get_data()
-	parsed = str(stringedCoordinates)[2:len(str(stringedCoordinates))-1]
-	print("parsed: ",parsed)
-	loaded_json = json.loads(parsed)
-	print("loaded:", loaded_json)
-	for x in loaded_json:
-		print("new coordinate found:", x)
 	print()
 	print()
+	print()
+	print("NEW RECEIVER CALL HERE")
+	print(latestRequest, " of type",  ty)
+#	print("\nGLOBAL VARIABLES FOUND", glob)
+
 
 	if (request.method=='GET'):
-		print("get called")
-		print(received)
-		print(ty)
-		print(jsoniee)
-		print(boo)
-		print(stringedCoordinates)
-		print(daaattypee)
-		return render_template('contained.html', a=jsoniee, b=daaat);
+		print("get called. Fetching data to serve to contained.html")
+	
+		return render_template('contained.html', requestCalled=previousReq, numOfPairs=glob.get("pairsFound"), coordinates=glob.get("stringedCoordinates"));
 	if (request.method=='POST'):
-		print("json parsed:")
-		print("cnotent length:", request.content_length)
-		print("cnotent type:", request.content_type)
-		print("data:",request.get_data)
-		print("md5", request.content_md5)
-		gottenjson = request.get_json();
-		print("gotten json:",gottenjson)
-		print(gottenjson())
-		print("json:",request.json)
-		print()
-		print(received)
-		print(ty)
-		print(jsoniee)
-		print(boo)
-		print()
+		#	On /retriever POST call(when /retriever is called from browser),
+		#	render a new page that spits out the received coordinates from a previous /main load
+		## Updates global variables so that any GET request to /receiver will be able to receive the most recent call
+		print("POST called. Posting data to for parsing and processing")
+		glob["stringedCoordinates"] = request.get_data()
+		stringy = glob.get("stringedCoordinates")
+		parsed = str(stringy)[2:len(str(stringy))-1]
+		print("Parsed through the request and received: \n",parsed)
+		try:
+			## JSON-Parse through the String parsed to find number of coordinates received from user
+			## This corresponds to the different locations the user wants to go to
+			## pairsFound denotes the number of  destinations received from user
+			glob["loaded_json"] = json.loads(parsed)
+			loaded = glob.get("loaded_json")
+			glob["pairsFound"] = len(loaded)
+			print("After loading json, Found ", glob.get("pairsFound"), " pairs from parsing json:", loaded)
+			for x in loaded:
+				print("   New user-destination coordinates found:", x)
+	## Can be put into a singular string or into an array, depending on whatever is easier to format to pass into first stage of pipeline---- finding realtime-satellite images of coordiantes before sending to IBM Visual Recognition classification of "extent of traffic"
+		except ValueError as err:
+			print("Something went terribly wrong. Likely no points were received.")
+			print(err)
+
+		## loaded_json will contain the user input that will be passed into first stage of pipeline after this point
 		print("\nBefore processing")
-		print(stringedCoordinates)
-		print(daaattypee)
-		result = ''
-		for item in stringedCoordinates:
-			# loop over every row
-			result += str(item['make']) + '\n'
-		print("post calleed")
-		res = result
+#		print(parsed)
+#		result = ''
+#		for item in stringedCoordinates:
+#			# loop over every row
+#			result += str(item['make']) + '\n'
+		print("POST call completed")
+		res = glob.get("loaded_json")
+
+# returne results after processing thorugh data points.
+# Put through pipeline
 		return "returned from json_io post"
 
 
