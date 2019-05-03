@@ -2,16 +2,21 @@ EARTHQWAZE TASKLIST:
 
 - Complete Pipeline (front to back integration)	
 	>> Inputs are a set of start and end coordinates
+		>> python end needs to return set of coordinates that correspond to path to be drawn
+		>> needs to be put into json_io.py(static) so that flask can serve GET and POST calls to the front end
 	>> Make image processing and data upload to image classifier hands-free (involves rewriting matlab script in python)
+	
 
 - Hide API keys
 	>> Locally generate a json file that we access to pull in api keys
 	>> Do NOT push this file to the github repo (We can share it via email rather than pushing and pulling)
-	>> 
+	>> bro.... you pushed this file already :) -Justin
 
 - Rename Files 
 	>> Some of the descriptions are currently redundant
 	>> Rename files to better describe their functions
+	>> some are refactored so far(index.html and some of the javascript ones)
+	>> python files do need to get cleaned
 
 - Document Code
 	>> *Pretty self-explanatory
@@ -20,7 +25,15 @@ EARTHQWAZE TASKLIST:
 - Improve Simulated Disaster Data
 	>> Gaussian noise method is a very elementary approach. Not robust to a wide variety of natural-disasters
 	>> Conduct research on ways of modelling road damage in image processing.
+	>> Could conduct actual tests to see how our model works so far
+
 
 - Retrain/Refine IBM Visual Recognition Model 
 	>> Train model over larger datasets (e.g. 1000+ images per level) now that color-data is enabled
 	>> Generate more levels for damage classification (finer binnings)
+
+- Fix some images to "declutter" main folder
+	>> put images in Images folder
+		>> I would mess with the map and graph but I haven't had a chance to look at the notebooks to see if they were hardcoded titles so I won't touch it yet so we don't have multiple copies
+	>> consolidate all jupyter notebooks together
+	>> refactor jupyter notebooks into one big python serving BEAST to finish off the project
