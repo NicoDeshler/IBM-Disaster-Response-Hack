@@ -5,6 +5,7 @@ import sys
 from flask import Flask, render_template, request, redirect, Response
 from flask_cors import CORS
 import random, json
+import GMaps_Windowing as gmap
 
 app = Flask(__name__)
 cors = CORS(app)
@@ -23,6 +24,12 @@ def output():
 	return render_template('./index.html',map="Get Directions!",
 						                  authors="Justin Wong, Sam Wu, Billy Chau, Nico Deshler")
 
+
+## Creates  a new route that runs worker, which handles GET and POST calls from /receiver
+## worker fetches user coordinates which 
+## represent all the locations(in coordinate form of (lat,long) that the user wants to go to.
+## minimum requirement: 2 coordinates, a starting point and destination. 
+## Could have multiple locations before arriving to final destination
 @app.route('/receiver', methods = ['GET','POST'])
 def worker():
 	# read json + reply
@@ -38,11 +45,13 @@ def worker():
 	print(latestRequest, " of type",  ty)
 #	print("\nGLOBAL VARIABLES FOUND", glob)
 
-
+	## Handle GET calls
 	if (request.method=='GET'):
-		print("get called. Fetching data to serve to contained.html")
+		print("GET called. Fetching data to serve to contained.html")
 	
 		return render_template('contained.html', requestCalled=previousReq, numOfPairs=glob.get("pairsFound"), coordinates=glob.get("stringedCoordinates"));
+	
+	## Handle POST calls
 	if (request.method=='POST'):
 		#	On /retriever POST call(when /retriever is called from browser),
 		#	render a new page that spits out the received coordinates from a previous /main load
@@ -60,20 +69,32 @@ def worker():
 			loaded = glob.get("loaded_json")
 			glob["pairsFound"] = len(loaded)
 			print("After loading json, Found ", glob.get("pairsFound"), " pairs from parsing json:", loaded)
+
+			## loaded_json will contain the user input that will be passed into first stage of pipeline after this point
+			## Can be put into a singular string or into an array, depending on whatever is easier to format to pass into first stage of pipeline
+			## PIPELINE STAGE 1a: finding realtime-satellite images of coordiantes before sending to IBM Visual Recognition classification of "extent of traffic"
+			print("\nBefore processing received coordinates")
+
+			## Store map/satellite images into directory for image-processing retrieval
+			## places images received into new directory called "serverWrite".
+			##//TODO HERE: needs to be tested to see if len() can be called on loaded
+			location_name = 'serverWrite'
+			print("hardcoded completed")
+			for i in range(0, len(loaded) - 1):
+				print("   New user-destination coordinates found:", loaded[i])
+				print("             Rastering Search Area and storing to new directory: " + location_name)
+				gmap.Raster_Search_Area(loaded[i], loaded[i+1], location_name, 'map', i)
+				gmap.Raster_Search_Area(loaded[i], loaded[i+1], location_name, 'satellite', i)
 			for x in loaded:
 				print("   New user-destination coordinates found:", x)
-	## Can be put into a singular string or into an array, depending on whatever is easier to format to pass into first stage of pipeline---- finding realtime-satellite images of coordiantes before sending to IBM Visual Recognition classification of "extent of traffic"
+
+
+	
 		except ValueError as err:
 			print("Something went terribly wrong. Likely no points were received.")
 			print(err)
 
-		## loaded_json will contain the user input that will be passed into first stage of pipeline after this point
-		print("\nBefore processing")
-#		print(parsed)
-#		result = ''
-#		for item in stringedCoordinates:
-#			# loop over every row
-#			result += str(item['make']) + '\n'
+		
 		print("POST call completed")
 		res = glob.get("loaded_json")
 
